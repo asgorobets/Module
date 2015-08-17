@@ -1,0 +1,48 @@
+<?php
+
+
+function hello_menu() {
+
+  $items['hello/%'] = array(
+    'title' => 'Hello there',
+    'page callback' => 'menu_hello_name',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'file' => 'menu_hello.name.inc',
+  );
+  return $items;
+}
+
+function hello_block_info() {
+  $blocks['hello_block'] = array(
+    'info' => t('The hello block'),
+
+  );
+
+  return $blocks;
+}
+
+function hello_block_view($delta = '') {
+
+  $block = array();
+
+  switch ($delta) {
+    case 'hello_block':
+      global $user;
+      if ($user->uid) {
+        $block['content'] = array(
+          '#markup' => 'Hi, ' . $user->name . '!'
+        );
+
+      }
+      else {
+        $block['content'] = array(
+          '#markup' => 'Hi, MrVendetta!'
+        );
+      }
+      break;
+  }
+  return $block;
+
+}
+
