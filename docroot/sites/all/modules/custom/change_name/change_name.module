@@ -4,7 +4,7 @@ function change_name_menu() {
   $items = array();
   $items['change/name'] = array(
     'title' => 'Change the name of the site',
-    'page callback' => 'drupal_get_form_page',
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('form_change_name'),
     'access arguments' => array('administer users'),
     'file' => 'site_name_change.admin.inc',
