@@ -38,6 +38,7 @@ function form_change_article($form, &$form_state)
         '#submit' => array('delete_article_form')
     );
     return $form;
+
 }
 
 $match = false;
@@ -50,14 +51,16 @@ function form_change_article_validate($form, &$form_state) {
   }
 }
 
-function update_article_form_validate($form, &$form_state)
+function update_article_form($form, &$form_state)
 {
     $node_update = node_load($form_state['values']['articles_nid']);
     $node_update->status = $form_state['values']['status_select'];
     node_save($node_update);
 }
 
+
 function delete_article_form($form, &$form_state)
 {
     node_delete($form_state['values']['articles_nid']);
+
 }
