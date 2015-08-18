@@ -1,8 +1,8 @@
 <?php
-function drupal_get_form_page() {
+/*function drupal_get_form_page() {
   return drupal_get_form('form_change_name');
 }
-
+*/
 
 /*function form_change_name(&$form_state){
   $form = array();
@@ -17,13 +17,13 @@ function drupal_get_form_page() {
 }
 */
 
-function form_change_name($form, &$form_state) {
+function form_change_name($form,&$form_state) {
   $form = array();
 
   $form['site_name'] = array(
     '#type' => 'textfield',
     '#title' => t('New site name'),
-    '#default_value' => variable_get('site_name'),
+    '#default_value' => variable_get('site_name','Drup'),
 
   );
 
@@ -40,7 +40,7 @@ function form_change_name($form, &$form_state) {
 }
 
 function form_change_name_validate($form, &$form_state) {
-  if ($form_state['values']['site_name'] == variable_get('site_name')) {
+  if ($form_state['values']['site_name'] == variable_get('site_name','Drup')) {
     form_set_error('site_name', t('Be original - use another name'));
   }
 
@@ -48,7 +48,7 @@ function form_change_name_validate($form, &$form_state) {
     form_set_error('site_name', t('Name too short - use more than 6 characters'));
   }
   if ($form_state['values']['site_name'] == 'Drupal') {
-    form_set_error('site_name', t('Do not use drupal'));
+    form_set_error('site_name', t('Do not use name Drupal'));
   }
 }
 
