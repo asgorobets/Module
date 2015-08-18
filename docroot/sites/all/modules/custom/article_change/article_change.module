@@ -1,0 +1,14 @@
+<?php
+
+function article_change_menu() {
+  $items = array();
+  $items['update_delete'] = array(
+    'title' => 'Select articles to modify',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('form_change_article'),
+    'access arguments' => array('administer users'),
+    'file' => 'article_change_delete.admin.inc',
+    'weight' => 1,
+  );
+  return $items;
+}
