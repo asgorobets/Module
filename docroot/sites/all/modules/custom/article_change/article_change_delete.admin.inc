@@ -1,6 +1,5 @@
 <?php
 
-
 function form_change_article($form, &$form_state)
 {
     $form = array();
@@ -18,6 +17,7 @@ function form_change_article($form, &$form_state)
         '#options' => $options,
         '#description' => t('Here you can select the articles you want tot change'),
     );
+
     $form['status_select'] = array(
         '#type' => 'select',
         '#title' => t('Selected articles you want to change'),
@@ -25,30 +25,33 @@ function form_change_article($form, &$form_state)
             0 => t('Unpublished'),
             1 => t('Published'),
         ),
-        '#description' => t('Here you can select the articles you want tot change'),
+        '#description' => t('Select the status you want to change'),
     );
+
     $form['actions']['update_article_button'] = array(
         '#type' => 'submit',
         '#value' => t('Update'),
         '#submit' => array('update_article_form')
     );
+
     $form['actions']['delete_article_button'] = array(
         '#type' => 'submit',
         '#value' => t('Delete'),
         '#submit' => array('delete_article_form')
     );
-    return $form;
 
+    return $form;
 }
 
 $match = false;
 
-function form_change_article_validate($form, &$form_state) {
+function form_change_article_validate($form, &$form_state)
+{
     $type = 'article';
     $node_update = node_load($form_state['values']['articles_nid']);
     if ($node_update->type != $type) {
         form_set_error('articles_nid', t('This is not an article'));
-  }
+    }
 }
 
 function update_article_form($form, &$form_state)
