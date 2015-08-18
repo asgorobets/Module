@@ -22,21 +22,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="article_change.module" pinned="false" current-in-tab="true">
+      <file leaf-file-name="article_change.module" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change.module">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5219298">
+            <state vertical-scroll-proportion="-9.153846">
               <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="article_change_delete.admin.inc" pinned="false" current-in-tab="false">
+      <file leaf-file-name="article_change_delete.admin.inc" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change_delete.admin.inc">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.8461537">
-              <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.2236842">
+              <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -54,8 +54,8 @@
         <option value="$PROJECT_DIR$/docroot/sites/all/modules/custom/update_delete/update_delete.admin.inc" />
         <option value="$PROJECT_DIR$/docroot/sites/all/modules/custom/update_delete/update_delete.info" />
         <option value="$PROJECT_DIR$/docroot/sites/all/modules/custom/update_delete/update_delete.module" />
-        <option value="$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change_delete.admin.inc" />
         <option value="$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change.module" />
+        <option value="$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change_delete.admin.inc" />
       </list>
     </option>
   </component>
@@ -372,18 +372,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change_delete.admin.inc">
+    <entry file="file://$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change.module">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.8461537">
-          <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
+        <state vertical-scroll-proportion="-9.153846">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change.module">
+    <entry file="file://$PROJECT_DIR$/docroot/sites/all/modules/custom/article_change/article_change_delete.admin.inc">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5219298">
-          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.2236842">
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
           <folding />
         </state>
       </provider>

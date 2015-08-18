@@ -4,8 +4,7 @@
 function form_change_article($form, &$form_state)
 {
     $form = array();
-
-
+    
     $type = "Article";
     $nodes = node_load_multiple(array(), array('type' => $type));
     foreach ($nodes as $nid => $node):
@@ -19,7 +18,6 @@ function form_change_article($form, &$form_state)
             $options_p[$k] = 'Unpublished';
         }
     endforeach;
-
 
     $form['articles_select'] = array(
         '#type' => 'select',
@@ -36,8 +34,6 @@ function form_change_article($form, &$form_state)
         ),
         '#description' => t('Here you can select the articles you want tot change'),
     );
-
-
     $form['actions']['submit'] = array(
         '#type' => 'submit',
         '#value' => t('Update'),
@@ -48,19 +44,13 @@ function form_change_article($form, &$form_state)
         '#value' => t('Delete'),
         '#submit' => array('custom_form_delete')
     );
-
     return $form;
-
-
 }
 
 function custom_form_update($form, &$form_state)
 {
-
     $node_update = node_load($form_state['values']['articles_select']);
-
     $node_update->status = $form_state['values']['status_select'];
-
     node_save($node_update);
 }
 
