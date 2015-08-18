@@ -48,7 +48,7 @@ function form_change_name_validate($form, &$form_state) {
     form_set_error('site_name', t('Name too short - use more than 6 characters'));
   }
   if ($form_state['values']['site_name'] == 'Drupal') {
-    form_set_error('site_name', t('Do ot use drupal'));
+    form_set_error('site_name', t('Do not use drupal'));
   }
 }
 
