@@ -1,6 +1,6 @@
 <?php
 
-function form_change_article($form, &$form_state)
+function change_article_form($form, &$form_state)
 {
     $form = array();
     $type = "article";
@@ -8,10 +8,9 @@ function form_change_article($form, &$form_state)
     $nodes = node_load_multiple(array(), array('type' => $type));
     foreach ($nodes as $nid => $node) {
         $options[$nid] = $node->title;
-        $options_p[$nid] = $node->status;
     }
 
-    $form['articles_nid'] = array(
+    $form['article_nid'] = array(
         '#type' => 'select',
         '#title' => t('Selected articles you want to change'),
         '#options' => $options,
@@ -45,18 +44,18 @@ function form_change_article($form, &$form_state)
 
 $match = false;
 
-function form_change_article_validate($form, &$form_state)
+function change_article__form_validate($form, &$form_state)
 {
     $type = 'article';
-    $node_update = node_load($form_state['values']['articles_nid']);
+    $node_update = node_load($form_state['values']['article_nid']);
     if ($node_update->type != $type) {
-        form_set_error('articles_nid', t('This is not an article'));
+        form_set_error('article_nid', t('This is not an article'));
     }
 }
 
 function update_article_form($form, &$form_state)
 {
-    $node_update = node_load($form_state['values']['articles_nid']);
+    $node_update = node_load($form_state['values']['article_nid']);
     $node_update->status = $form_state['values']['status_select'];
     node_save($node_update);
 }
@@ -64,6 +63,6 @@ function update_article_form($form, &$form_state)
 
 function delete_article_form($form, &$form_state)
 {
-    node_delete($form_state['values']['articles_nid']);
+    node_delete($form_state['values']['article_nid']);
 
 }

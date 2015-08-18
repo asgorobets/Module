@@ -8,7 +8,7 @@ function article_change_menu()
         'page callback' => 'drupal_get_form',
         'page arguments' => array('form_change_article'),
         'access arguments' => array('administer users'),
-        'file' => 'article_change_delete.admin.inc',
+        'file' => 'article_change.admin.inc',
         'weight' => 1,
     );
     return $items;
