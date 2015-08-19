@@ -1,0 +1,3 @@
+name = Node Stat
+description = Counts the views per node + Statistics
+core = 7.x

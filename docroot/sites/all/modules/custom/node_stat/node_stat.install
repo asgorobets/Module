@@ -1,0 +1,42 @@
+<?php
+
+/*
+ *Implement hook_schema().
+ */
+function node_stat_schema() {
+  $schema = array();
+  $schema['node_stat'] = array(
+    'description' => 'Information about node views.',
+    'fields' => array(
+      'nid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "The node's {node}.nid.",
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "The user's {uid}.uid.",
+      ),
+
+      'last_viewed' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The last views date (timestamp).',
+      ),
+    ),
+    //'primary key' => array('nid', 'uid'),
+  );
+
+  return $schema;
+}
+
+
+
+

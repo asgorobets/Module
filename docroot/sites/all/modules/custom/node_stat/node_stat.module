@@ -1,0 +1,113 @@
+<?php
+
+/**
+ * Implements hook_node_view().
+ */
+function node_stat_node_view($node, $view_mode = 'full') {
+  //only when looking at the full version, NOT the teaser
+  if ($view_mode == 'full') {
+
+    global $user;
+    global $count;
+    // Everytime a node is viewed, increment the node_views count
+    // in the node_stat table by one and include the result in the node content
+
+    // Get record
+    $record = node_stat_get_record($node->nid, $user->uid);
+
+    //If no record, create one that we can insert later
+    if ($record === FALSE) {
+      $record = new StdClass();
+      $record->nid = $node->nid;
+      $record->uid = $user->uid;
+      $record->last_viewed = time();
+    }
+    // Update last_viewed
+    $record->last_viewed = time();
+
+
+    // Set the record
+    node_stat_set_record($record);
+    #krumo($record);
+    $user_fields = user_load($record->uid);
+    // Set up an array of placeholders to pass to t().
+    $t_args = array(
+      '%uid' => $record->uid,
+      '%date' => date('j M, Y', $record->last_viewed),
+      '%user' => $user_fields -> name,
+      '%times' => $count,
+    );
+
+    $node->content['node_views'] = array(
+      '#markup' => t('This page has been viewed %times times.  It was last viewed by %user on %date.', $t_args),
+      '#weight' => 10,
+    );
+  }
+}
+
+
+/**
+ * Get the record.
+ *
+ * @param int $nid
+ *   The node id.
+ * @param int $uid
+ *   The user id.
+ * @return mixed
+ *   The stdClass record, or FALSE if no record exists.
+ */
+
+function node_stat_get_record($nid) {
+  //SELECT view_count FROM node_stat WHERE nid = $nid & uid = $uid
+  $query = db_select('node_stat', 'd')
+    ->fields('d', array('nid', 'uid', 'last_viewed'))
+    ->condition('nid', $nid);
+  $record = $query->execute()->fetch();
+  return $record;
+
+  $results = db_select('node_stat', 'd')
+    ->fields('d', array('nid'))
+    ->condition('nid', $nid)
+    ->execute()->fetchAll();
+  $count = count($results);
+  return $count;
+
+
+
+}
+
+
+//$nodes = node_load(array(), array('nid' => $record->nid));
+
+/**
+ * Save a record.
+ *
+ * @param stdClass $record
+ *   The record to save.
+ */
+function node_stat_set_record($record) {
+  //sanity check
+  if (!is_object($record)) {
+    return watchdog('node_stat', 'We could not update information about node views.', array(), WATCHDOG_ERROR);
+  }
+  if ($record->uid == 0){
+    return watchdog('node_stat', 'We do not count anonymous users.', array(), WATCHDOG_ERROR);
+  }
+
+  //INSERT/UPDATE into node_stat ('nid', 'uid', 'node_views') VALUES ('nid', 'uid', 'node_views')
+  $query = db_insert('node_stat')
+    ->fields((array) $record);
+  $query->execute();
+
+}
+
+
+
+
+
+
+
+
+
+
+
