@@ -64,7 +64,12 @@ function node_stat_set_record($record) {
   if ($record->uid == 0) {
     return watchdog('node_stat', 'We do not count anonymous users.', array(), WATCHDOG_ERROR);
   }
+  $query = db_insert('node_stat')
+    ->fields((array) $record);
+  $query->execute();
+
 }
+
 
 
 
