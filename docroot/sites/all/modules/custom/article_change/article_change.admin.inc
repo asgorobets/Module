@@ -1,7 +1,6 @@
 <?php
 
-function change_article_form($form, &$form_state)
-{
+function change_article_form($form, &$form_state){
     $form = array();
     $type = "article";
 
@@ -44,8 +43,7 @@ function change_article_form($form, &$form_state)
 
 $match = false;
 
-function change_article__form_validate($form, &$form_state)
-{
+function change_article__form_validate($form, &$form_state){
     $type = 'article';
     $node_update = node_load($form_state['values']['article_nid']);
     if ($node_update->type != $type) {
@@ -53,16 +51,14 @@ function change_article__form_validate($form, &$form_state)
     }
 }
 
-function update_article_form($form, &$form_state)
-{
+function update_article_form($form, &$form_state){
     $node_update = node_load($form_state['values']['article_nid']);
     $node_update->status = $form_state['values']['status_select'];
     node_save($node_update);
 }
 
 
-function delete_article_form($form, &$form_state)
-{
+function delete_article_form($form, &$form_state){
     node_delete($form_state['values']['article_nid']);
 
 }
