@@ -1,0 +1,29 @@
+<?php
+
+function rating_hubs_schema() {
+  $schema = array();
+  $schema['rating_hubs'] = array(
+    'description' => 'Information about node views.',
+    'fields' => array(
+      'tid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "The tid of a hub .",
+      ),
+      'term_name' => array(
+              'description' => 'The name of the term.',
+              'type' => 'varchar',
+              'length' => 32,
+              'not null' => TRUE,
+              'default' => '')
+    ),
+  );
+
+  return $schema;
+}
+
+
+
+

@@ -6,7 +6,7 @@ function article_change_menu()
     $items['update_delete'] = array(
         'title' => 'Select articles to modify',
         'page callback' => 'drupal_get_form',
-        'page arguments' => array('form_change_article'),
+        'page arguments' => array('change_article_form'),
         'access arguments' => array('administer users'),
         'file' => 'article_change.admin.inc',
         'weight' => 1,
