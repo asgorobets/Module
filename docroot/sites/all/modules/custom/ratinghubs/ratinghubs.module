@@ -1,0 +1,186 @@
+<?php
+
+
+function ratinghubs_taxonomy_term_view($term, $view_mode = 'full') {
+
+  global $total_comment_votes;
+  global $total_nodes_votes;
+  global $total_comments;
+  global $total_nodes;
+  global $total_rating_comments;
+  global $total_rating_nodes;
+  global $total_rating_block;
+
+  if ($view_mode == 'full') {
+
+    $record_comments = ratinghubs_comments_get_record($term->tid);
+
+    if ($record_comments === FALSE) {
+      $record_comments = new StdClass();
+      $record_comments->tid = $term->tid;
+    }
+
+    $record_nodes = ratinghubs_nodes_get_record($term->tid);
+
+    if ($record_nodes === FALSE) {
+      $record_nodes = new StdClass();
+      $record_nodes->tid = $term->tid;
+    }
+
+    $record_total = ratinghubs_total_get_record($term->tid);
+
+    if ($record_total === FALSE) {
+      $record_total = new StdClass();
+      $record_total->tid = $term->tid;
+    }
+
+    $query_comments_all = db_select('taxonomy_index', 'tx');
+    $query_comments_all->leftJoin('comment', 'c', 'tx.nid = c.nid');
+    $query_comments_all->leftJoin('votingapi_vote', 'v', 'v.entity_id = c.cid');
+
+    $result_query_comments_all = $query_comments_all
+      ->fields('tx', array('nid', 'tid'))
+      ->fields('c', array('cid', 'subject'))
+      ->fields('v', array('value'))
+      ->execute();
+
+    foreach ($result_query_comments_all as $row) {
+      $record_comments->tid = $row->tid;
+      $record_comments->nid = $row->nid;
+      $record_comments->cid = $row->cid;
+      $record_comments->value = $row->value;
+      ratinghubs_comments_set_record($record_comments);
+    }
+
+    $query_comment_votes = db_select('ratinghubs_comments', 'rh');
+    $query_comment_votes->fields('rh', array('value', 'tid'))
+      ->condition('rh.tid', $term->tid);
+    $result_comment_votes = $query_comment_votes->execute();
+
+    foreach ($result_comment_votes as $single) {
+      $total_comment_votes +=  $single->value;
+    }
+
+    $query_total_comments = db_select('ratinghubs_comments', 'rh1');
+    $query_total_comments->fields('rh1', array('cid', 'tid'))
+      ->condition('rh1.tid', $term->tid);
+    $total_comments = $query_total_comments->execute()->rowCount();
+
+    $total_rating_comments = 0.1 * $total_comments + 0.01 * $total_comment_votes;
+
+    $query_nodes_all = db_select('taxonomy_index', 'txn');
+    $query_nodes_all->leftJoin('votingapi_vote', 'vn', 'vn.entity_id = txn.nid');
+    $result_query_nodes_all = $query_nodes_all
+      ->fields('txn', array('nid', 'tid'))
+      ->fields('vn', array('value'))
+      ->condition('txn.tid', $term->tid)
+      ->execute()->fetchAll();
+
+    foreach ($result_query_nodes_all as $row) {
+      $record_nodes->tid = $row->tid;
+      $record_nodes->nid = $row->nid;
+      $record_nodes->value = $row->value;
+      ratinghubs_nodes_set_record($record_nodes);
+    }
+
+    $query_nodes_votes = db_select('ratinghubs_nodes', 'rhn');
+    $query_nodes_votes->fields('rhn', array('value', 'tid'))
+      ->condition('rhn.tid', $term->tid);
+    $result_nodes_votes = $query_nodes_votes->execute();
+    foreach ($result_nodes_votes as $single) {
+      $total_nodes_votes +=   $single->value;
+    }
+
+    $query_total_nodes = db_select('ratinghubs_nodes', 'rh1n');
+    $query_total_nodes->fields('rh1n', array('nid', 'tid'))
+      ->condition('rh1n.tid', $term->tid);
+    $total_nodes = $query_total_nodes->execute()->rowCount();
+
+    $total_rating_nodes = 5 * $total_nodes + 0.3 * $total_nodes_votes;
+
+    $total_rating_block = $total_rating_nodes + $total_rating_comments;
+    $record_total->tid = $term->tid;
+    $record_total->total_value = $total_rating_block;
+
+    $query_total_rating = db_merge('ratinghubs_total')
+      ->key(array('tid' => $record_total->tid))
+      ->fields((array) $record_total);
+    $query_total_rating->execute();
+  }
+}
+
+function ratinghubs_comments_get_record($tid) {
+  $query = db_select('ratinghubs_comments', 'r')
+    ->fields('r', array('tid', 'nid'))
+    ->condition('tid', $tid);
+  $record_comments = $query->execute()->fetch();
+  return $record_comments;
+}
+
+function ratinghubs_comments_set_record($record_comments) {
+
+  $query = db_merge('ratinghubs_comments')
+    ->key(array('cid' => $record_comments->cid))
+    ->fields((array) $record_comments);
+  $query->execute();
+}
+
+function ratinghubs_nodes_get_record($tid) {
+  $query = db_select('ratinghubs_nodes', 'rn')
+    ->fields('rn', array('tid', 'nid'))
+    ->condition('tid', $tid);
+  $record_nodes = $query->execute()->fetch();
+  return $record_nodes;
+}
+
+function ratinghubs_nodes_set_record($record_nodes) {
+
+  $query = db_merge('ratinghubs_nodes')
+    ->key(array('nid' => $record_nodes->nid))
+    ->fields((array) $record_nodes);
+  $query->execute();
+}
+
+function ratinghubs_total_get_record($tid) {
+  $query = db_select('ratinghubs_total', 'rt')
+    ->fields('rt', array('tid', 'total_value'))
+    ->condition('tid', $tid);
+  $record_total = $query->execute()->fetch();
+  return $record_total;
+}
+
+function ratinghubs_block_info() {
+  $blocks['rating_block'] = array(
+    'info' => t('Block for displaying a rating of a hub'),
+
+  );
+  return $blocks;
+}
+
+function ratinghubs_block_view($delta = '') {
+
+  $block = array();
+
+  switch ($delta) {
+    case 'rating_block':
+      global $total_rating_block;
+      if ($total_rating_block != 0) {
+        $block['content'] = array(
+          '#markup' => 'Rating of the hub ' . $total_rating_block
+        );
+      }
+      else {
+        $block['content'] = array(
+          '#markup' => 'This block has no rating'
+        );
+      }
+      break;
+  }
+  return $block;
+
+}
+
+
+
+
+

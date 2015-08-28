@@ -1,0 +1,101 @@
+<?php
+
+function ratinghubs_schema() {
+  $schema = array();
+  $schema['ratinghubs_comments'] = array(
+    'description' => 'Information about node views.',
+    'fields' => array(
+        'tid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "The tid of a hub .",
+      ),
+
+    'nid' => array(
+            'type' => 'int',
+            'unsigned' => TRUE,
+            'not null' => TRUE,
+            'default' => 0,
+            'description' => "The nid of a hub .",
+    ),
+
+    'cid' => array(
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => "The nid of a hub .",
+        ),
+
+        'value' => array(
+                        'type' => 'int',
+                        'unsigned' => False,
+                        'not null' => False,
+                        'default' => 0,
+                        'description' => "the value of rating votes on comments .",
+                ),
+    ),
+     'primary key' => array('cid'),
+  );
+
+  $schema['ratinghubs_nodes'] = array(
+      'description' => 'Information about node views.',
+      'fields' => array(
+          'tid' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+          'description' => "The tid of a hub .",
+        ),
+
+      'nid' => array(
+              'type' => 'int',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+              'default' => 0,
+              'description' => "The nid of a hub .",
+      ),
+
+          'value' => array(
+                          'type' => 'int',
+                          'unsigned' => False,
+                          'not null' => False,
+                          'default' => 0,
+                          'description' => "The value of rating votes on nodes .",
+                  ),
+      ),
+
+       'primary key' => array('nid'),
+    );
+
+    $schema['ratinghubs_total'] = array(
+          'description' => 'Information about node views.',
+          'fields' => array(
+              'tid' => array(
+              'type' => 'int',
+              'unsigned' => TRUE,
+              'not null' => TRUE,
+              'default' => 0,
+              'description' => "The tid of a hub .",
+            ),
+
+          'total_value' => array(
+                  'type' => 'float',
+                  'unsigned' => False,
+                  'not null' => TRUE,
+                  'default' => 0,
+                  'description' => "Total value for the block view .",
+          ),
+          ),
+
+           'primary key' => array('tid'),
+        );
+  return $schema;
+}
+
+
+
+
