@@ -13,25 +13,25 @@ function ratinghubs_taxonomy_term_view($term, $view_mode = 'full') {
 
   if ($view_mode == 'full') {
 
-    $record = ratinghubs_comments_get_record($term->tid);
+    $record_comments = ratinghubs_comments_get_record($term->tid);
 
-    if ($record === FALSE) {
-      $record = new StdClass();
-      $record->tid = $term->tid;
+    if ($record_comments === FALSE) {
+      $record_comments = new StdClass();
+      $record_comments->tid = $term->tid;
     }
 
-    $record_2 = ratinghubs_nodes_get_record($term->tid);
+    $record_nodes = ratinghubs_nodes_get_record($term->tid);
 
-    if ($record_2 === FALSE) {
-      $record_2 = new StdClass();
-      $record_2->tid = $term->tid;
+    if ($record_nodes === FALSE) {
+      $record_nodes = new StdClass();
+      $record_nodes->tid = $term->tid;
     }
 
-    $record_3 = ratinghubs_total_get_record($term->tid);
+    $record_total = ratinghubs_total_get_record($term->tid);
 
-    if ($record_3 === FALSE) {
-      $record_3 = new StdClass();
-      $record_3->tid = $term->tid;
+    if ($record_total === FALSE) {
+      $record_total = new StdClass();
+      $record_total->tid = $term->tid;
     }
 
     $query_comments_all = db_select('taxonomy_index', 'tx');
@@ -45,11 +45,11 @@ function ratinghubs_taxonomy_term_view($term, $view_mode = 'full') {
       ->execute();
 
     foreach ($result_query_comments_all as $row) {
-      $record->tid = $row->tid;
-      $record->nid = $row->nid;
-      $record->cid = $row->cid;
-      $record->value = $row->value;
-      ratinghubs_comments_set_record($record);
+      $record_comments->tid = $row->tid;
+      $record_comments->nid = $row->nid;
+      $record_comments->cid = $row->cid;
+      $record_comments->value = $row->value;
+      ratinghubs_comments_set_record($record_comments);
     }
 
     $query_comment_votes = db_select('ratinghubs_comments', 'rh');
@@ -77,10 +77,10 @@ function ratinghubs_taxonomy_term_view($term, $view_mode = 'full') {
       ->execute()->fetchAll();
 
     foreach ($result_query_nodes_all as $row) {
-      $record_2->tid = $row->tid;
-      $record_2->nid = $row->nid;
-      $record_2->value = $row->value;
-      ratinghubs_nodes_set_record($record_2);
+      $record_nodes->tid = $row->tid;
+      $record_nodes->nid = $row->nid;
+      $record_nodes->value = $row->value;
+      ratinghubs_nodes_set_record($record_nodes);
     }
 
     $query_nodes_votes = db_select('ratinghubs_nodes', 'rhn');
@@ -99,12 +99,12 @@ function ratinghubs_taxonomy_term_view($term, $view_mode = 'full') {
     $total_rating_nodes = 5 * $total_nodes + 0.3 * $total_nodes_votes;
 
     $total_rating_block = $total_rating_nodes + $total_rating_comments;
-    $record_3->tid = $term->tid;
-    $record_3->total_value = $total_rating_block;
+    $record_total->tid = $term->tid;
+    $record_total->total_value = $total_rating_block;
 
     $query_total_rating = db_merge('ratinghubs_total')
-      ->key(array('tid' => $record_3->tid))
-      ->fields((array) $record_3);
+      ->key(array('tid' => $record_total->tid))
+      ->fields((array) $record_total);
     $query_total_rating->execute();
   }
 }
@@ -113,15 +113,15 @@ function ratinghubs_comments_get_record($tid) {
   $query = db_select('ratinghubs_comments', 'r')
     ->fields('r', array('tid', 'nid'))
     ->condition('tid', $tid);
-  $record = $query->execute()->fetch();
-  return $record;
+  $record_comments = $query->execute()->fetch();
+  return $record_comments;
 }
 
-function ratinghubs_comments_set_record($record) {
+function ratinghubs_comments_set_record($record_comments) {
 
   $query = db_merge('ratinghubs_comments')
-    ->key(array('cid' => $record->cid))
-    ->fields((array) $record);
+    ->key(array('cid' => $record_comments->cid))
+    ->fields((array) $record_comments);
   $query->execute();
 }
 
@@ -129,15 +129,15 @@ function ratinghubs_nodes_get_record($tid) {
   $query = db_select('ratinghubs_nodes', 'rn')
     ->fields('rn', array('tid', 'nid'))
     ->condition('tid', $tid);
-  $record_2 = $query->execute()->fetch();
-  return $record_2;
+  $record_nodes = $query->execute()->fetch();
+  return $record_nodes;
 }
 
-function ratinghubs_nodes_set_record($record_2) {
+function ratinghubs_nodes_set_record($record_nodes) {
 
   $query = db_merge('ratinghubs_nodes')
-    ->key(array('nid' => $record_2->nid))
-    ->fields((array) $record_2);
+    ->key(array('nid' => $record_nodes->nid))
+    ->fields((array) $record_nodes);
   $query->execute();
 }
 
@@ -145,8 +145,8 @@ function ratinghubs_total_get_record($tid) {
   $query = db_select('ratinghubs_total', 'rt')
     ->fields('rt', array('tid', 'total_value'))
     ->condition('tid', $tid);
-  $record_3 = $query->execute()->fetch();
-  return $record_3;
+  $record_total = $query->execute()->fetch();
+  return $record_total;
 }
 
 function ratinghubs_block_info() {
