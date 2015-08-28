@@ -58,7 +58,7 @@ function ratinghubs_taxonomy_term_view($term, $view_mode = 'full') {
     $result_comment_votes = $query_comment_votes->execute();
 
     foreach ($result_comment_votes as $single) {
-      $total_comment_votes = $total_comment_votes + $single->value;
+      $total_comment_votes +=  $single->value;
     }
 
     $query_total_comments = db_select('ratinghubs_comments', 'rh1');
@@ -88,7 +88,7 @@ function ratinghubs_taxonomy_term_view($term, $view_mode = 'full') {
       ->condition('rhn.tid', $term->tid);
     $result_nodes_votes = $query_nodes_votes->execute();
     foreach ($result_nodes_votes as $single) {
-      $total_nodes_votes = $total_nodes_votes + $single->value;
+      $total_nodes_votes +=   $single->value;
     }
 
     $query_total_nodes = db_select('ratinghubs_nodes', 'rh1n');
@@ -166,7 +166,7 @@ function ratinghubs_block_view($delta = '') {
       global $total_rating_block;
       if ($total_rating_block != 0) {
         $block['content'] = array(
-          '#markup' => 'Rating of the block ' . $total_rating_block
+          '#markup' => 'Rating of the hub ' . $total_rating_block
         );
       }
       else {
